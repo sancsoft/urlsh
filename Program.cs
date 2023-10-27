@@ -4,6 +4,7 @@ using UrlSh.Data.Models;
 using Sqids;
 using MySql.Data.MySqlClient;
 using UrlSh;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,13 +57,16 @@ builder.Services.AddHostedService<Worker>();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.MapGet("/{code}", async (HttpContext context, string code, UrlShContext urlShContext, CancellationToken ct) =>
 {
