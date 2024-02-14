@@ -3,14 +3,14 @@
   "profiles": {
     "UrlSh": {
       "commandName": "Project",
-      "workingDirectory": "./",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "workingDirectory": "./",
       "launchUrl": "/",
       "applicationUrl": "https://+:7018;http://+:5107",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true
+      }
     }
   }
 }
