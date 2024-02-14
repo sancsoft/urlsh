@@ -6,33 +6,26 @@ namespace UrlSh
     {
         private const string _alphabet = "VjXZ0vRgQAYtqcenW3hN41apEfKDwb5zJs9FS8MoCH2xLdIkTrUi6uBP7ymOlG";
         private const int _minLength = 6;
+        private readonly Lazy<SqidsEncoder> _lazySqidsEncoder;
 
-        public int? Decode(string sqid)
+        public SqidsService()
         {
-            var sqids = new SqidsEncoder(new()
+            _lazySqidsEncoder = new Lazy<SqidsEncoder>(() => new SqidsEncoder(new()
             {
                 Alphabet = _alphabet,
                 MinLength = _minLength
-            });
+            }));
+        }
 
-            var ids = sqids.Decode(sqid);
-            if (ids.Count != 1)
-            {
-                return null;
-            }
-
-            return ids[0];
+        public int? Decode(string sqid)
+        {
+            var ids = _lazySqidsEncoder.Value.Decode(sqid);
+            return ids.Count == 1 ? ids[0] : null;
         }
 
         public string Encode(int id)
         {
-            var sqids = new SqidsEncoder(new()
-            {
-                Alphabet = _alphabet,
-                MinLength = _minLength
-            });
-
-            return sqids.Encode(id);
+            return _lazySqidsEncoder.Value.Encode(id);
         }
     }
 }
